@@ -1,43 +1,43 @@
-/*=============== Loader | Omonjon ===============*/
-document.addEventListener('DOMContentLoaded', function (eventObject) {
-    $('.load').fadeIn();
-})
-window.addEventListener("load", function (eventObject) {
-    $('.load').fadeOut("slow");
-});
+// Header | Search modal ************************************ */
+if ($(".search-action").length) {
+    $(".search-action").click(function () {
+        // $(".search-action-input").attr("autofocus", "autofocus");
+        // $(".search-action-input").autocomplete({
+        //     autoFocus: true
+        // });
+        var interval = 500;
+        setTimeout(() => {
+            $('.search-action-input').focus();
+            console.log('work');
+        }, interval);
+    });
+};
 
-/* ********************************************************** */
-/* ########################################################## */
 /* Voice on mode ******************************************** */
 /* Modal okna zvukovoy effect uchun ************************* */
-var VoiceModeStorage = localStorage.getItem("voiceModeStorage");
-var voiceOn = document.querySelector(".voiceOn");
-var voiceMode = document.querySelector(".voiceMode");
-var timeCloseModalAlert = 100;
-var voiceCheckStatus = 0;
+let Voicemode = localStorage.getItem("Voicemode");
+var voiceTop = document.querySelector(".voiceOn");
+var timeCloseModalAlert = 1000;
+let voiceOn = false;
+let voiceCheck = true;
 var voiceModeControl = document.querySelector(".voiceModeControl");
-var voiceSaveToggle = document.querySelector("input[id='toggleVoiceMode']");
-// const voiceModeToggle = document.querySelector(".mode__voice");
-// var justVoiceId = document.getElementById("voiceId");
-var justVoiceClass = document.querySelector(".voiceUnique");
+const voiceModeToggle = document.querySelector(".mode__voice");
+let voiceSaveToggle = document.querySelector(".voicemode input[type='checkbox']");
 
 /* Barcha matnlarni ovozlarni ******************************* */
-
 /* ijro etuvchi funksiyalar shuni ichida ******************** */
-
-function activeVoice() {
-    if (!voiceCheckStatus) {
+function ifActiveVoice() {
+    if (!voiceOn) {
         // Malum secundan keyin sahifa yangilanadi
         setInterval(() => {
             location.reload();
         }, timeCloseModalAlert);
-    } else if (voiceCheckStatus) {
+    } else if (voiceOn) {
         // A simple IIFE function.
         // Простая функция IIFE.
         // Oddiy IIFE funktsiyasi.
         (function () {
-            "use strict";
-            // For the sake of practice.
+            "use strict"; // For the sake of practice.
             // Ради практики.
             // Amaliyot uchun.
 
@@ -98,7 +98,7 @@ function activeVoice() {
                 }
 
                 speechSynthesis.speak(utterThis);
-            }
+            };
 
             function buildBtn(e) {
                 let button = document.getElementById("voice");
@@ -223,50 +223,179 @@ function activeVoice() {
         })();
     }
 }
-
 const enableVoiceMode = () => {
-    voiceOn.classList.add("active");
+    voiceTop.classList.add("active");
     voiceModeControl.classList.add("active");
+    voiceModeToggle.classList.add("active");
     voiceSaveToggle.setAttribute("checked", "true");
-    voiceSaveToggle.classList.add('active');
-    voiceCheckStatus = 1;
-    activeVoice();
-    localStorage.setItem("voiceModeStorage", "enabled");
+    voiceOn = true;
+    voiceCheck = true;
+    ifActiveVoice();
+    localStorage.setItem("Voicemode", "enabled");
 };
-
 const DisableAllSound = () => {
     voiceModeControl.innerHTML = "";
-    justVoiceClass.classList.add("d-none", "visibility-hidden", "user-select");
+    document.getElementById("voice").classList.add("d-none", "visibility-hidden", "user-select");
     /*document.getElementById("voice").innerHTML = "";*/
 }
-
 const EnableAllSound = () => {
-    justVoiceClass.classList.remove("d-none", "visibility-hidden", "user-select");
+    document.getElementById("voice").classList.remove("d-none", "visibility-hidden", "user-select");
 }
-
 const disableVoiceMode = () => {
-    voiceOn.classList.remove("active");
+    voiceTop.classList.remove("active");
     voiceModeControl.classList.remove("active");
+    voiceModeToggle.classList.remove("active");
     voiceSaveToggle.setAttribute("checked", "false");
-    voiceSaveToggle.classList.remove('active');
-    voiceCheckStatus = 0;
-    localStorage.setItem("voiceModeStorage", null);
+    voiceOn = false;
+    voiceCheck = false;
+    localStorage.setItem("Voicemode", null);
 };
-
-if (VoiceModeStorage === "enabled") {
+if (Voicemode === 'enabled') {
     enableVoiceMode();
-    EnableAllSound();
 }
-
-voiceSaveToggle.addEventListener("click", () => {
-
-    console.log("VoiceON Clicked")
-    console.log(voiceCheckStatus);
-
-    if (!voiceCheckStatus) {
+voiceTop.addEventListener("click", () => {
+    if (!voiceOn) {
         enableVoiceMode();
         EnableAllSound();
+    } else {
+        disableVoiceMode();
+        DisableAllSound();
 
+    }
+
+    /*ifActiveVoice();*/
+});
+/* ********************************************************** */
+/* ########################################################## */
+/* Font size incremine or decremine ************************* */
+$(document).ready(function () {
+    let plus5Max = '22px';
+    let minus5Min = '16px';
+    let decrease = document.querySelector(".decremet");
+    let increase = document.querySelector(".increment");
+    let currentSize = document.getElementById("currentSize");
+    var curFontSize = localStorage["FontSize"];
+    if (curFontSize) {
+        //set to previously saved fontsize if available
+        $('.dataFont').css('font-size', curFontSize);
+        currentSize.innerText = curFontSize;
+        if (curFontSize === '22px') {
+            increase.classList.add('active-last');
+            increase.classList.add('visibile-hide');
+            decrease.classList.remove('active-last');
+            decrease.classList.add('visibile');
+
+        } else if (curFontSize === '16px') {
+            decrease.classList.remove('active-last');
+            decrease.classList.remove('visibile');
+        } else {
+            decrease.classList.add('active-last');
+            decrease.classList.add('visibile');
+        }
+
+    }
+    $(".increaseFont,.decreaseFont,.resetFont").click(function () {
+        var type = $(this).val();
+        curFontSize = $('.dataFont').css('font-size');
+        if (type === 'increase') {
+            decrease.classList.remove('active-last');
+            decrease.classList.add('visibile');
+            if (curFontSize !== plus5Max) {
+                $('.dataFont').css('font-size', parseInt(curFontSize) + 1 + "px");
+                curFontSize = parseInt(curFontSize) + 1 + "px";
+            } else {
+                increase.classList.add('active-last');
+                increase.classList.add('visibile-hide');
+            }
+        } else if (type === 'decrease') {
+            increase.classList.remove('active-last');
+            increase.classList.remove('visibile-hide');
+            if (curFontSize !== minus5Min) {
+                $('.dataFont').css('font-size', parseInt(curFontSize) - 1 + "px");
+                curFontSize = parseInt(curFontSize) - 1 + "px";
+            } else {
+                decrease.classList.add('active-last');
+                decrease.classList.remove('visibile');
+            }
+        } else if (type === 'resetFont') {
+            decrease.classList.remove('active-last');
+            decrease.classList.remove('visibile');
+            increase.classList.remove('active-last');
+            increase.classList.remove('visibile-hide');
+            $('.dataFont').css('font-size', "16px");
+            curFontSize = "16px";
+        }
+        currentSize.innerText = curFontSize;
+        localStorage.setItem('FontSize', curFontSize);
+    });
+});
+/* ********************************************************** */
+/* ########################################################## */
+/* Dark light mode bilan ulanishlar ************************* */
+let darkMode = localStorage.getItem("darkMode");
+const darkModeToggle = document.querySelector(".mode__theme");
+let svgNone = document.querySelectorAll(".svg-none");
+let saveToggle = document.querySelector(".darkmode input[type='checkbox']");
+
+const enableDarkMode = () => {
+    document.documentElement.classList.add("blind");
+    darkModeToggle.classList.add("active");
+    saveToggle.setAttribute("checked", "true");
+
+    for (let i = 0; i < svgNone.length; i++) {
+        const element = svgNone[i];
+        element.style.display = "none";
+    }
+
+    localStorage.setItem("darkMode", "enabled");
+};
+
+const disableDarkMode = () => {
+    document.documentElement.classList.remove("blind");
+    darkModeToggle.classList.remove("active");
+    saveToggle.setAttribute("checked", "false");
+    for (let i = 0; i < svgNone.length; i++) {
+        const element = svgNone[i];
+        element.style.display = "block";
+    }
+
+    localStorage.setItem("darkMode", null);
+};
+
+if (darkMode === 'enabled') {
+    enableDarkMode();
+}
+
+function disableScroll() {
+    // Get the current page scroll position
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+
+        // if any scroll is attempted, set this to the previous value
+        window.onscroll = function () {
+            window.scrollTo(scrollLeft, scrollTop);
+        };
+}
+
+function enableScroll() {
+    window.onscroll = function () { };
+}
+
+darkModeToggle.addEventListener("click", () => {
+    darkMode = localStorage.getItem("darkMode");
+
+    if (darkMode !== 'enabled') {
+        enableDarkMode();
+        /*disableScroll();*/
+    } else {
+        disableDarkMode();
+    }
+});
+
+/* Bootstrap Notify ***********************************************/
+$('.voiceOn').click(function () {
+    if ($(".voiceOn").hasClass("active")) {
+        console.log('Work notify');
         $.notify({
             // options
             icon: 'bx bx-volume-full bx-sm',
@@ -294,7 +423,7 @@ voiceSaveToggle.addEventListener("click", () => {
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown shadow border-white  bg-primary text-white',
+                enter: 'animated fadeInDown',
                 exit: 'animated fadeOutRight'
             },
             onShow: null,
@@ -314,9 +443,6 @@ voiceSaveToggle.addEventListener("click", () => {
             //     '</div>'
         });
     } else {
-        disableVoiceMode();
-        DisableAllSound();
-
         $.notify({
             // options
             icon: 'bx bx-volume-mute bx-sm',
@@ -344,7 +470,7 @@ voiceSaveToggle.addEventListener("click", () => {
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown shadow border-white bg-primary text-white',
+                enter: 'animated fadeInDown',
                 exit: 'animated fadeOutRight'
             },
             onShow: null,
@@ -364,566 +490,9 @@ voiceSaveToggle.addEventListener("click", () => {
             //     '</div>'
         });
     }
-});
-// $('.voiceOn').click(function () {
-//     if ($(".voiceOn").hasClass("active")) {
-//         console.log('Work Active');
-//
-//     }
-//     else {
-//         console.log('Work without Active');
-//
-//     }
-// })
+})
 
-/* ********************************************************** */
-/* ########################################################## */
-/* Bootstrap Notify *******************************************/
-
-// $('.voiceOn').click(function () {
-//
-// })
-/* ********************************************************** */
-/* ########################################################## */
-/* Plus toggle size incremine or decremine ************************* */
-
-let plusMode = localStorage.getItem("plusMode");
-const plusModeToggle = document.querySelector(".mode__plus");
-/*let plusSvgNone = document.querySelectorAll(".plus-svg-none");*/
-let plusSaveToggle = document.querySelector(".plusMode input[id='plusBtn']");
-let plusTagBody = document.querySelector(".plus-tag-body");
-let socialPosition = document.querySelector('.social-position');
-let widthRightNow = window.innerWidth;
-let descTopWidth = 1024;
-
-const enablePlusMode = () => {
-    plusModeToggle.classList.add("active");
-    plusTagBody.classList.add("active");
-    plusSaveToggle.setAttribute("checked", "true");
-    socialPosition.classList.add("active");
-
-    // for (let i = 0; i < svgNone.length; i++) {
-    //     const element = svgNone[i];
-    //     element.style.display = "none";
-    // }
-    localStorage.setItem("plusMode", "enabled");
-};
-
-const disablePlusMode = () => {
-    plusModeToggle.classList.remove("active");
-    plusTagBody.classList.remove("active");
-    plusSaveToggle.setAttribute("checked", "false");
-    socialPosition.classList.remove("active");
-
-    /*    for (let i = 0; i < svgNone.length; i++) {
-            const element = svgNone[i];
-            element.style.display = "block";
-        }*/
-
-    localStorage.setItem("plusMode", null);
-};
-
-if (plusMode === 'enabled') {
-    enablePlusMode();
-}
-
-if ((widthRightNow >= descTopWidth) && (plusMode === null)) {
-    enablePlusMode();
-}
-
-plusModeToggle.addEventListener("click", () => {
-
-    plusMode = localStorage.getItem("plusMode");
-
-    if (plusMode !== 'enabled') {
-
-        enablePlusMode();
-
-    } else {
-
-        disablePlusMode();
-
-    }
-});
-
-/* ********************************************************** */
-/* ########################################################## */
-/* Font size incremine or decremine ************************* */
-$(document).ready(function () {
-    let plus5Max = '22px';
-    let minus5Min = '16px';
-    let decrease = document.querySelector(".decremet");
-    let increase = document.querySelector(".increment");
-    let autoSizeInvisible = document.querySelector(".autoSizeInvisible");
-    let currentSize = document.getElementById("currentSize");
-    var curFontSize = localStorage["FontSize"];
-    var multipleTextBefore = 'Saytda font o\'lchovi';
-    var multipleBefore = '<span class="bg-white text-primary p-1 mx-2 rounded-3 w-56px d-block">' + '1x' + '</span>';
-    var multipleTextAfter = 'karra kattalashtirildi';
-    if (curFontSize) {
-        //set to previously saved fontsize if available
-        $('.dataFont').css('font-size', curFontSize);
-
-
-        if (curFontSize === '16px') {
-            multipleTextAfter = ' dastlabki holatga qaytarildi!';
-            multipleBefore = '1x';
-        }
-        if (curFontSize === '17px') {
-            // multiple = '1.0625x';
-            multipleBefore = '1.1x';
-        }
-        if (curFontSize === '18px') {
-            // multiple = '1.125x';
-            multipleBefore = '1.2x';
-        }
-        if (curFontSize === '19px') {
-            // multiple = '1.1875x';
-            multipleBefore = '1.3x';
-        }
-        if (curFontSize === '20px') {
-            // multiple = '1.25x';
-            multipleBefore = '1.4x';
-        }
-        if (curFontSize === '21px') {
-            // multiple = '1.3125x';
-            multipleBefore = '1.5x';
-        }
-        if (curFontSize === '22px') {
-            // multiple = '1.375x';
-            multipleBefore = '1.6x';
-        }
-        currentSize.innerHTML = '<span class="bg-white text-primary p-1 mx-2 rounded-3 w-56px d-block">' + multipleBefore + '</span>';
-        // currentSize.innerHTML = ' <span class="bg-white text-primary p-1 mx-2 rounded-3">' + multiple + '</span> ';
-        if (curFontSize === '22px') {
-            increase.classList.add('active-last');
-            increase.classList.add('visibile-hide');
-            decrease.classList.remove('active-last');
-            decrease.classList.add('visibile');
-            autoSizeInvisible.classList.add('visibile');
-
-
-        } else if (curFontSize === '16px') {
-            decrease.classList.remove('active-last');
-            decrease.classList.remove('visibile');
-            autoSizeInvisible.classList.remove('visibile');
-        } else {
-            decrease.classList.add('active-last');
-            decrease.classList.add('visibile');
-            autoSizeInvisible.classList.add('visibile');
-
-        }
-
-    }
-    $(".increaseFont,.decreaseFont,.resetFont").click(function () {
-        var type = $(this).val();
-        curFontSize = $('.dataFont').css('font-size');
-        if (type === 'increase') {
-            decrease.classList.remove('active-last');
-            decrease.classList.add('visibile');
-
-            autoSizeInvisible.classList.add('visibile');
-
-            if (curFontSize !== plus5Max) {
-                $('.dataFont').css('font-size', parseInt(curFontSize) + 1 + "px");
-                curFontSize = parseInt(curFontSize) + 1 + "px";
-                if(curFontSize ===plus5Max){
-                    increase.classList.add('active-last');
-                    increase.classList.add('visibile-hide');
-                    autoSizeInvisible.classList.add('visibile');
-                }
-            } else {
-                increase.classList.add('active-last');
-                increase.classList.add('visibile-hide');
-                autoSizeInvisible.classList.add('visibile');
-            }
-        } else if (type === 'decrease') {
-            increase.classList.remove('active-last');
-            increase.classList.remove('visibile-hide');
-
-            if (curFontSize !== minus5Min) {
-                $('.dataFont').css('font-size', parseInt(curFontSize) - 1 + "px");
-                curFontSize = parseInt(curFontSize) - 1 + "px";
-                if (curFontSize === minus5Min) {
-                    autoSizeInvisible.classList.remove('visibile');
-                    decrease.classList.add('active-last');
-                    decrease.classList.remove('visibile');
-                }
-
-            } else {
-                decrease.classList.add('active-last');
-                decrease.classList.remove('visibile');
-
-            }
-        } else if (type === 'resetFont') {
-            decrease.classList.remove('active-last');
-            decrease.classList.remove('visibile');
-            increase.classList.remove('active-last');
-            increase.classList.remove('visibile-hide');
-            autoSizeInvisible.classList.remove('visibile');
-
-            $('.dataFont').css('font-size', "16px");
-            curFontSize = "16px";
-        }
-
-        localStorage.setItem('FontSize', curFontSize);
-
-        var multipleTextBefore = 'Saytda font o\'lchovi';
-        var multiple = '16px';
-        var multipleTextAfter = 'karra kattalashtirildi';
-
-        if (curFontSize === '16px'){
-            multipleTextAfter = ' dastlabki holatga qaytarildi!';
-            multiple = '1x';
-        }
-        if (curFontSize === '17px'){
-            // multiple = '1.0625x';
-            multiple = '1.1x';
-        }
-        if (curFontSize === '18px'){
-            // multiple = '1.125x';
-            multiple = '1.2x';
-        }
-        if (curFontSize === '19px'){
-            // multiple = '1.1875x';
-            multiple = '1.3x';
-        }
-        if (curFontSize === '20px'){
-            // multiple = '1.25x';
-            multiple = '1.4x';
-        }
-        if (curFontSize === '21px'){
-            // multiple = '1.3125x';
-            multiple = '1.5x';
-        }
-        if (curFontSize === '22px'){
-            // multiple = '1.375x';
-            multiple = '1.6x';
-        }
-        // currentSize.innerText = curFontSize;
-        currentSize.innerHTML = ' <span class="bg-white text-primary p-1 mx-2 rounded-3 w-56px d-block">' + multiple + '</span> ';
-        $.notify({
-            // options
-            icon: 'bx bx-font-size bx-sm',
-            title: 'Font o\'lchovi',
-            message: multipleTextBefore + ' ' + ' <span class="bg-white text-primary p-2 mx-2 rounded-3 w-56px d-flex align-items-center justify-content-center">' + multiple + '</span> ' + ' ' + multipleTextAfter, //curFontSize
-            // message: 'Sayda kunduzgi rejim ishga tushdi !',
-            // url: 'https://github.com/mouse0270/bootstrap-notify',
-            // target: '_blank'
-        }, {
-            // settings
-            element: 'body',
-            // position: null,
-            type: "info",
-            // allow_dismiss: true,
-            // newest_on_top: false,
-            showProgressbar: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: 20,
-            spacing: 10,
-            z_index: 9999,
-            delay: 2000,
-            timer: 1000,
-            url_target: '_blank',
-            mouse_over: null,
-            animate: {
-                enter: 'animated fadeInDown shadow border-white  bg-primary text-white',
-                exit: 'animated fadeOutRight'
-            },
-            onShow: null,
-            onShown: null,
-            onClose: null,
-            onClosed: null,
-            icon_type: 'class',
-            // template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-            //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-            //     '<span data-notify="icon"></span> ' +
-            //     '<span data-notify="title">{1}</span> ' +
-            //     '<span data-notify="message">{2}</span>' +
-            //     '<div class="progress" data-notify="progressbar">' +
-            //     '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-            //     '</div>' +
-            //     '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            //     '</div>'
-        });
-    });
-});
-
-
-// For Dark Light mode | Omonjon //
-let darkModeStorage = localStorage.getItem("darkModeStorage");
-const darkModeToggle = document.querySelector(".mode__theme");
-let svgNone = document.querySelectorAll(".svg-none");
-let saveToggle = document.querySelector(".darkmode input[type='checkbox']");
-
-const enableDarkMode = () => {
-    document.documentElement.classList.add("blind");
-    darkModeToggle.classList.add("active");
-    saveToggle.setAttribute("checked", "true");
-
-    for (let i = 0; i < svgNone.length; i++) {
-        const element = svgNone[i];
-        element.style.display = "none";
-    }
-
-    localStorage.setItem("darkModeStorage", "enabled");
-};
-
-const disableDarkMode = () => {
-    document.documentElement.classList.remove("blind");
-    darkModeToggle.classList.remove("active");
-    saveToggle.setAttribute("checked", "false");
-
-    for (let i = 0; i < svgNone.length; i++) {
-        const element = svgNone[i];
-        element.style.display = "block";
-    }
-
-    localStorage.setItem("darkModeStorage", null);
-};
-
-if (darkModeStorage === 'enabled') {
-    enableDarkMode();
-}
-
-function disableScroll() {
-    // Get the current page scroll position
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-
-        // if any scroll is attempted, set this to the previous value
-        window.onscroll = function () {
-            window.scrollTo(scrollLeft, scrollTop);
-        };
-}
-
-function enableScroll() {
-    window.onscroll = function () {
-    };
-}
-
-darkModeToggle.addEventListener("click", () => {
-    darkModeStorage = localStorage.getItem("darkModeStorage");
-
-    if (darkModeStorage !== 'enabled') {
-        enableDarkMode();
-        $.notify({
-            // options
-            icon: 'bx bx-moon bx-sm',
-            title: 'Tungi rejim yoqildi',
-            message: 'Sayda kunduzgi rejim ishga tushdi !',
-            // url: 'https://github.com/mouse0270/bootstrap-notify',
-            // target: '_blank'
-        }, {
-            // settings
-            element: 'body',
-            // position: null,
-            type: "info",
-            // allow_dismiss: true,
-            // newest_on_top: false,
-            showProgressbar: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: 20,
-            spacing: 10,
-            z_index: 9999,
-            delay: 3500,
-            timer: 1000,
-            url_target: '_blank',
-            mouse_over: null,
-            animate: {
-                enter: 'animated fadeInDown shadow border-white  bg-primary text-white',
-                exit: 'animated fadeOutRight'
-            },
-            onShow: null,
-            onShown: null,
-            onClose: null,
-            onClosed: null,
-            icon_type: 'class',
-            // template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-            //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-            //     '<span data-notify="icon"></span> ' +
-            //     '<span data-notify="title">{1}</span> ' +
-            //     '<span data-notify="message">{2}</span>' +
-            //     '<div class="progress" data-notify="progressbar">' +
-            //     '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-            //     '</div>' +
-            //     '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            //     '</div>'
-        });
-        /*disableScroll();*/
-    } else {
-        disableDarkMode();
-        $.notify({
-            // options
-            icon: 'bx bx-sun bx-sm',
-            title: 'Kunduzgi rejim yoqildi',
-            message: 'Sayda kunduzgi rejim ishga tushdi !',
-            // url: 'https://github.com/mouse0270/bootstrap-notify',
-            // target: '_blank'
-        }, {
-            // settings
-            element: 'body',
-            // position: null,
-            type: "info",
-            // allow_dismiss: true,
-            // newest_on_top: false,
-            showProgressbar: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: 20,
-            spacing: 10,
-            z_index: 9999,
-            delay: 3500,
-            timer: 1000,
-            url_target: '_blank',
-            mouse_over: null,
-            animate: {
-                enter: 'animated fadeInDown shadow border-white bg-primary text-white',
-                exit: 'animated fadeOutRight'
-            },
-            onShow: null,
-            onShown: null,
-            onClose: null,
-            onClosed: null,
-            icon_type: 'class',
-            // template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-            //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-            //     '<span data-notify="icon"></span> ' +
-            //     '<span data-notify="title">{1}</span> ' +
-            //     '<span data-notify="message">{2}</span>' +
-            //     '<div class="progress" data-notify="progressbar">' +
-            //     '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-            //     '</div>' +
-            //     '<a href="{3}" target="{4}" data-notify="url"></a>' +
-            //     '</div>'
-        });
-    }
-});
-
-// Partners | Swiper ********************************** */
-if ($(".partnersSlider").length) {
-    var swiper = new Swiper(".partnersSlider", {
-        autoplay: {
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-            delay: 1000,
-        },
-        speed: 1000,
-        slidesPerView: 5,
-        grabCursor: true,
-        loop: true,
-        breakpoints: {
-            // when window width is >= 320px
-            320: {
-                slidesPerView: 1,
-                // spaceBetween: 20
-            },
-            // when window width is >= 480px
-            480: {
-                slidesPerView: 2,
-                spaceBetween: 5
-            },
-            // when window width is >= 640px
-            640: {
-                slidesPerView: 3,
-                spaceBetween: 5
-            },
-            // when window width is >= 768px
-            768: {
-                slidesPerView: 4,
-                spaceBetween: 5
-            },
-            // when window width is >= 1024px
-            1024: {
-                slidesPerView: 5,
-                spaceBetween: 10
-            },
-        },
-        navigation: {
-            nextEl: ".swiper-partners-btn-next",
-            prevEl: ".swiper-partners-btn-prev",
-        },
-    });
-}
-
-
-/*=============== INTRO SWIPER | Omonjon ===============*/
-if ($(".introSwiper").length) {
-    const slide = document.querySelectorAll(".introSwiper .swiper-slide");
-    // for (const i of slide) {
-    //     const random = (number) => Math.floor(Math.random() * (number + 155));
-    //     const rndCol = `rgba(${random(255)},${random(255)},${random(255)},0)`;
-    //     i.style.backgroundColor = rndCol;
-    // }
-    const swiperOptions = {
-        loop: "infinite",
-        effect: "flip",
-        grabCursor: true,
-        // sliderPerView:1,
-        autoplay: {
-            delay: 4700,
-            disableOnInteraction: false
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev"
-        },
-        // custom pagination
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-            renderBullet: function (i, className) {
-                return `
-   <button class="${className}">
-  <svg class="swiper-progress" width="31" height="31"><circle class="circle-origin" r="15" cx="15.5" cy="15.5"></circle></svg><span class="d-flex align-content-center justify-content-center"><img class="d-flex align-content-center justify-content-center" src="assets/images/icons/dot.svg"></span>
-</button>
-      `;
-            }
-        },
-        breakpoints: {
-            // when window width is >= 320px
-            320: {
-                effect: "creative",
-                // spaceBetween: 20
-            },
-            // when window width is >= 320px
-            768: {
-                effect: "flip",
-                // spaceBetween: 20
-            },
-        }
-
-    };
-    /*
-    ${
-                        i + 1
-                    } */
-    const swiper2 = new Swiper(".introSwiper", swiperOptions);
-
-
-    /*var swiper = new Swiper(".introSwiper", {
-        loop: true,
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-    });*/
-}
-
-
-/*=============== HEADER FIXED | Omonjon ===============*/
+/* Header Fixed ***********************************************/
 if ($("#myHeader").length) {
     window.onscroll = function () {
         myFunction()
@@ -941,37 +510,11 @@ if ($("#myHeader").length) {
     }
 }
 
-/*=============== SCROLL UP | Omonjon ===============*/
-if ($("#scroll-up").length) {
-    function scrollUp() {
-        const scrollUp = document.getElementById('scroll-up');
-        // When the scroll is higher than 350 viewport height, add the show-scroll class to the a tag with the scroll-top class
-        if (this.scrollY >= 350) scrollUp.classList.add('show-scroll');
-        else scrollUp.classList.remove('show-scroll')
-    }
-
-    window.addEventListener('scroll', scrollUp)
-}
-
-var e = ".dropdown-backdrop",
-    f = '[data-toggle="dropdown"]',
-    g = function (b) {
-        a(b).on("click.bs.dropdown", this.toggle)
-    };
-
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-
-//Initialize bootstrap tooltips
-// var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-// var tooltipList = tooltipTriggerList.map( function(tooltipTriggerEl) {
-//     return new bootstrap.Tooltip(tooltipTriggerEl, {
-//         trigger : 'hover'
+// /* Header Dropdown ***********************************************/
+// if ($(".header-drop").length) {
+//     window.addEventListener('click', () => {
+//         if ($(".dropdown-menu").hasClass("header-drop")){
+//             console.log('test')
+//         }
 //     });
-// });
-// $('[data-toggle="tooltip"]').tooltip({
-//     trigger : 'hover'
-// })
-$('[rel="tooltip"]').on('click', function () {
-    $(this).tooltip('hide')
-})
+// };
