@@ -510,11 +510,19 @@ if ($("#myHeader").length) {
     }
 }
 
-// /* Header Dropdown ***********************************************/
-// if ($(".header-drop").length) {
-//     window.addEventListener('click', () => {
-//         if ($(".dropdown-menu").hasClass("header-drop")){
-//             console.log('test')
-//         }
-//     });
-// };
+/* Header Intro | Swiper ***********************************************/
+if ($(".introSwiper").length) {
+    let swiper = new Swiper(".introSwiper", {
+        loop: "infinite",
+        effect: "flip",
+        grabCursor: true,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        // autoplay: {
+        //     delay: 4000,
+        //     disableOnInteraction: true
+        // },
+    });
+};
