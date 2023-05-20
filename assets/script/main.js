@@ -520,9 +520,41 @@ if ($(".introSwiper").length) {
             el: ".swiper-pagination",
             clickable: true,
         },
-        // autoplay: {
-        //     delay: 4000,
-        //     disableOnInteraction: true
-        // },
+        autoplay: {
+            delay: 4000,
+            disableOnInteraction: true
+        },
     });
 };
+
+/* PRODUCTS FILTER | MIXITUP ===============*/
+let mixerProducts = mixitup('.products__content', {
+    selectors: {
+        target: '.products__card'
+    },
+    animation: {
+        duration: 300
+    }
+});
+
+/* Default filter products */
+mixerProducts.filter('.personal')
+
+/* Link active products */
+const linkProducts = document.querySelectorAll('.products__item')
+
+function activeProducts(){
+    linkProducts.forEach(l=> l.classList.remove('active-product'))
+    this.classList.add('active-product')
+}
+
+linkProducts.forEach(l=> l.addEventListener('click', activeProducts))
+
+/*=============== SHOW SCROLL UP ===============*/
+const scrollUp = () => {
+    const scrollUp = document.getElementById('scroll-up')
+    // When the scroll is higher than 350 viewport height, add the show-scroll class to the a tag with the scrollup class
+    this.scrollY >= 300 ? scrollUp.classList.add('show-scroll')
+        : scrollUp.classList.remove('show-scroll')
+}
+window.addEventListener('scroll', scrollUp)

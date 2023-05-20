@@ -35,6 +35,10 @@ body {
     color: var(--text-color) !important;
 }
 
+.text-color-light{
+    color: var(--text-color-light) !important;
+}
+
 .w-26 {
     width: 26%;
 }
@@ -446,22 +450,171 @@ html.blind {
     color: rgb(20, 82, 159);
 }
 
+/* ==================== PRODUCTS SECTION | Omonjon ==================== */
+.products-section-title{
+    font-size: 30px;
+    line-height: 30px;
+    color: #313131;
+    font-weight: 700;
+    position: relative;
+}
+
+.products-section-title:after{
+    content: "Страховые продукты";
+    position: absolute;
+    left: -25px;
+    top: -20px;
+    max-width: 818px;
+    width: 100%;
+    height: auto;
+    font-size: 55px;
+    font-weight: 800;
+    line-height: 30px;
+    opacity: 0.1;
+    color: rgb(20, 82, 159);
+}
+
+.products__item {
+    border-bottom: 2px solid transparent;
+}
+
+.products-section .active-product {
+    color: var(--bs-primary) !important;
+    border-bottom: 2px solid var(--bs-warning) !important;
+}
+
+/* ==================== NEWS COMPANY SECTION | Omonjon ==================== */
+.news-company-title{
+    font-size: 30px;
+    line-height: 30px;
+    color: #313131;
+    font-weight: 700;
+    position: relative;
+}
+
+.news-company-title:after{
+    content: "Новости компании";
+    position: absolute;
+    left: -25px;
+    top: -20px;
+    max-width: 818px;
+    width: 100%;
+    height: auto;
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 30px;
+    opacity: 0.1;
+    color: rgb(20, 82, 159);
+}
+
+.hover-shadow:hover {
+    transform: translateY(-15px);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+/* ==================== NEWS INS SECTION | Omonjon ==================== */
+.news-ins-title{
+    font-size: 30px;
+    line-height: 30px;
+    color: #313131;
+    font-weight: 700;
+    position: relative;
+}
+
+.news-ins-title:after{
+    content: "Новости компании";
+    position: absolute;
+    left: -25px;
+    top: -20px;
+    max-width: 818px;
+    width: 100%;
+    height: auto;
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 30px;
+    opacity: 0.1;
+    color: rgb(20, 82, 159);
+}
+
+/*=============== SCROLL BAR | Omonjon ===============*/
+::-webkit-scrollbar {
+    width: .6rem;
+    border-radius: .5rem;
+    background-color: hsl(207, 4%, 80%);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: hsl(207, 4%, 65%);
+    border-radius: .5rem;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(207, 4%, 50%);
+}
+
+/*=============== SCROLL UP | Omonjon ===============*/
+.scroll_up {
+    position: fixed;
+    right: 3.5rem;
+    bottom: -100%;
+    background-color: var(--bs-primary);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    display: inline-flex;
+    padding: .35rem;
+    border-radius: .25rem;
+    font-size: 1.1rem;
+    color: var(--bs-white);
+    z-index: 10;
+    transition: bottom .4s, transform .4s, background-color .4s;
+}
+
+.scroll_up:hover {
+    transform: translateY(-.35rem);
+    background-color: var(--bs-white);
+    color: var(--bs-dark);
+}
+
+/* Show Scroll Up*/
+.show-scroll {
+    bottom: 4rem;
+}
+
+@media (max-width: 1200px) {
+    .products-section-title:after{
+        display: none;
+        font-size: 25px;
+    }
+}
+
 @media (max-width: 767px) {
-    .app-section-title{
+    .app-section-title,
+    .products-section-title,
+    .news-company-title,
+    .news-ins-title{
         font-size: 20px;
     }
-    .app-section-title:after{
+    .app-section-title:after,
+    .news-company-title:after,
+    .news-ins-title:after{
         top: -15px;
         font-size: 40px;
+    }
+    .scroll_up {
+        right: 1rem;
     }
 }
 
 @media (max-width: 576px) {
-    .app-section-title{
+    .app-section-title,
+    .products-section-title,
+    .news-company-title,
+    .news-ins-title{
         text-align: center;
         font-size: 20px;
     }
-    .app-section-title:after{
+    .app-section-title:after,
+    .news-company-title:after,
+    .news-ins-title:after{
         display: none;
     }
 }
