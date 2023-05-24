@@ -607,7 +607,7 @@ html.blind {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: hsl(207, 4%, 50%);
+    background-color: var(--bs-primary);
 }
 
 /*=============== SCROLL UP | Omonjon ===============*/
