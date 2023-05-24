@@ -1,3 +1,12 @@
+/*=============== LOADER ===============*/
+document.addEventListener('DOMContentLoaded', function (eventObject) {
+    $('.load').fadeIn();
+})
+window.addEventListener("load", function (eventObject) {
+    $('.load').fadeOut("slow");
+
+});
+
 // Header | Search modal ************************************ */
 if ($(".search-action").length) {
     $(".search-action").click(function () {
